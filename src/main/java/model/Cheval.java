@@ -1,7 +1,7 @@
 package model;
 
 import java.time.LocalDate;
-
+import model.*;
 public class Cheval {
 
     private int id;
