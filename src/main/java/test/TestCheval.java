@@ -11,7 +11,7 @@ public class TestCheval {
         Cheval c = new Cheval();
         c.setId(2);
         c.setNom("Houri");
-
+        
         // création d'une instance de race nommée r
         Race r = new Race();
         r.setId(1);
@@ -23,6 +23,6 @@ public class TestCheval {
         // Affichage des informations dans la console
         //voir notamment du nom de la race du cheval
         System.out.println("Cheval : " + c.getId() + " " + c.getNom() + " "
-                + c.getRace().getId() + " " + c.getRace().getNom());
+                + c.getRace().getId() + " " + c.getRace().getNom() + " sa mère est " + c.getMere() + " et son père est " + c.getCheval_pere());
     }
 }
