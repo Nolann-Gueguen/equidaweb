@@ -16,7 +16,8 @@ public class Vente {
     private String corpsMessage;
     private CategVente categVente;
     private ArrayList<Lot> lesLots ;
-
+    private Lieu lieu;
+    
     public Vente() {
     }
 
@@ -91,6 +92,15 @@ public class Vente {
         this.categVente = categVente;
     }
 
+    public Lieu getLieu() {
+        return lieu;
+    }
+
+    public void setLieu(Lieu lieu) {
+        this.lieu = lieu;
+    }
+
+    
    
 
 }
