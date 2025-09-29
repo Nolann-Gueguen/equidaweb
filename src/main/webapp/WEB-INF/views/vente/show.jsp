@@ -1,3 +1,4 @@
+<%@page import="model.Lot"%>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="model.Cheval" %>
 <%@ page import="model.Vente" %>
@@ -44,7 +45,7 @@
             <div class="form-container">
                 <% 
                     Vente laVente = (Vente) request.getAttribute("pLaVente");
-                    ArrayList<Cheval> lesChevaux = (ArrayList<Cheval>) request.getAttribute("plesChevaux");
+                    ArrayList<Lot> lesLots = (ArrayList<Lot>) request.getAttribute("plesLots");
 
                     if (laVente != null) {
                 %>
@@ -74,35 +75,41 @@
                         </div>
                     </div>
 
-                    <h3>Chevaux présents dans la vente</h3>
-                    <% if (lesChevaux != null && !lesChevaux.isEmpty()) { %>
-                        <div class="table-responsive">
-                            <table class="table table-striped table-sm">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Nom du cheval</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <% for (Cheval c : lesChevaux) { %>
+                        <h3>Lots présents dans la vente</h3>
+                        <% if (lesLots != null && !lesLots.isEmpty()) { %>
+                            <div class="table-responsive">
+                                <table class="table table-striped table-sm">
+                                    <thead>
                                         <tr>
-                                            <td><%= c.getId() %></td>
-                                            <td>
-                                                <a href="<%= request.getContextPath() %>/cheval-servlet/show?idCheval=<%= c.getId() %>">
-                                                    <%= c.getNom() %>
-                                                </a>
-                                            </td>
+                                            <th>ID Lot</th>
+                                            <th>Prix de départ</th>
+                                            <th>Cheval associé</th>
                                         </tr>
-                                    <% } %>
-                                </tbody>
-                            </table>
-                        </div>
-                    <% } else { %>
-                        <div class="alert alert-info">
-                            Aucun cheval trouvé pour cette vente.
-                        </div>
-                    <% } %>
+                                    </thead>
+                                    <tbody>
+                                        <% for (Lot lot : lesLots) { 
+                                               Cheval cheval = lot.getCheval(); // récupération du cheval lié au lot
+                                        %>
+                                            <tr>
+                                                <td><%= lot.getId() %></td>
+                                                <td><%= lot.getPrixDepart() %></td>
+                                                <td>
+                                                    <% if (cheval != null) { %>
+                                                        <a href="<%= request.getContextPath() %>/cheval-servlet/show?idCheval=<%= cheval.getId() %>">
+                                                            <%= cheval.getNom() %>
+                                                        </a>
+                                                    <% } else { %>
+                                                        Aucun cheval associé
+                                                    <% } %>
+                                                </td>
+                                            </tr>
+                                        <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <% } else { %>
+                            <div class="alert alert-info">Aucun lot trouvé pour cette vente.</div>
+                        <% } %>
 
                     <div class="row" style="margin-top: 30px;">
                         <div class="col-sm-offset-3 col-sm-9">

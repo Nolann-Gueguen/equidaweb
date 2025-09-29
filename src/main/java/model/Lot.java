@@ -12,7 +12,7 @@ import model.*;
 public class Lot {
     private int id;
     private String prixDepart;
-    private ArrayList<Cheval> lesChevaux ;
+    private Cheval cheval ;
     private Vente vente;
     
     public Lot() {
@@ -42,20 +42,15 @@ public class Lot {
         this.vente = vente;
     }
 
-    public ArrayList<Cheval> getLesChevaux() {
-        return lesChevaux;
+    public Cheval getCheval() {
+        return cheval;
     }
 
-    public void setLesChevaux(ArrayList<Cheval> lesChevaux) {
-        this.lesChevaux = lesChevaux;
+    public void setCheval(Cheval cheval) {
+        this.cheval = cheval;
     }
+
     
-    public void addCheval(Cheval unCheval){
-        if (lesChevaux ==null ){
-            lesChevaux = new ArrayList<Cheval>();
-        }
-        lesChevaux.add(unCheval);
-    }
     
     
 }

@@ -20,6 +20,7 @@ import jakarta.servlet.annotation.*;
 import model.Cheval;
 import model.Vente;
 import model.Lieu;
+import model.Lot;
 
 @WebServlet(name = "venteServlet", value = "/vente-servlet/*")
 public class VenteServlet extends HttpServlet {
@@ -53,8 +54,8 @@ public class VenteServlet extends HttpServlet {
 
                 if (laVente != null) {
                     request.setAttribute("pLaVente", laVente);
-                    ArrayList<Cheval> lesChevaux = DaoVente.getLesChevaux(cnx, idVente);
-                    request.setAttribute("plesChevaux", lesChevaux);
+                    ArrayList<Lot> lesLots = DaoVente.getLesLots(cnx, idVente);
+                    request.setAttribute("plesLots", lesLots);
                     this.getServletContext().getRequestDispatcher("/WEB-INF/views/vente/show.jsp").forward(request, response);
                 } else {
                     response.sendRedirect(request.getContextPath() + "/vente-servlet/list");
