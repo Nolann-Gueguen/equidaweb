@@ -11,11 +11,9 @@ public class Vente {
     private int id;
     private String nom;
     private String dateDebutVente;
-    private String dateEnvoieMessage;
-    private String objetMessage;
-    private String corpsMessage;
     private CategVente categVente;
     private ArrayList<Lot> lesLots ;
+    private Lieu lieu;
 
     public Vente() {
     }
@@ -44,29 +42,6 @@ public class Vente {
         this.dateDebutVente = dateDebutVente;
     }
 
-    public String getDateEnvoieMessage() {
-        return dateEnvoieMessage;
-    }
-
-    public void setDateEnvoieMessage(String dateEnvoieMessage) {
-        this.dateEnvoieMessage = dateEnvoieMessage;
-    }
-
-    public String getObjetMessage() {
-        return objetMessage;
-    }
-
-    public void setObjetMessage(String objetMessage) {
-        this.objetMessage = objetMessage;
-    }
-
-    public String getCorpsMessage() {
-        return corpsMessage;
-    }
-
-    public void setCorpsMessage(String corpsMessage) {
-        this.corpsMessage = corpsMessage;
-    }
 
     public ArrayList<Lot> getlesLots() {
         return lesLots;
@@ -75,13 +50,14 @@ public class Vente {
     public void setlesLots(ArrayList<Lot> lesLots) {
         this.lesLots = lesLots;
     }
-
-    public ArrayList<Lot> getLesLots() {
-        return lesLots;
+    
+    public void addVente(Lot unLot){
+        if (lesLots ==null ){
+            lesLots = new ArrayList<Lot>();
+        }
+        lesLots.add(unLot);
     }
 
-    public void addVente(Vente v) {
-    }
 
     public CategVente getCategVente() {
         return categVente;
@@ -91,6 +67,15 @@ public class Vente {
         this.categVente = categVente;
     }
 
+    public Lieu getLieu() {
+        return lieu;
+    }
+
+    public void setLieu(Lieu lieu) {
+        this.lieu = lieu;
+    }
+    
+    
    
 
 }
