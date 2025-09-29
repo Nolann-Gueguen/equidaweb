@@ -81,12 +81,39 @@
                                 </div>
                             </div>
 
+                            <!-- 👇 Partie ajoutée pour afficher le père -->
+                            <div class="row detail-row">
+                                <div class="col-sm-3 detail-label">Père</div>
+                                <div class="col-sm-9 detail-value">
+                                    <% if (leCheval.getPere() != null) { %>
+                                        <a href="<%= request.getContextPath() %>/cheval-servlet/show?idCheval=<%= leCheval.getPere().getId() %>">
+                                            <%= leCheval.getPere().getNom() %>
+                                        </a>
+                                    <% } else { %>
+                                        Non renseigné
+                                    <% } %>
+                                </div>
+                            </div>
+
+                            <!-- 👇 Partie ajoutée pour afficher la mère -->
+                            <div class="row detail-row">
+                                <div class="col-sm-3 detail-label">Mère</div>
+                                <div class="col-sm-9 detail-value">
+                                    <% if (leCheval.getMere() != null) { %>
+                                        <a href="<%= request.getContextPath() %>/cheval-servlet/show?idCheval=<%= leCheval.getMere().getId() %>">
+                                            <%= leCheval.getMere().getNom() %>
+                                        </a>
+                                    <% } else { %>
+                                        Non renseigné
+                                    <% } %>
+                                </div>
+                            </div>
+
                             <div class="row" style="margin-top: 30px;">
                                 <div class="col-sm-offset-3 col-sm-9">
                                     <a href="<%= request.getContextPath() %>/cheval-servlet/list" class="btn btn-default">
                                         <span class="glyphicon glyphicon-arrow-left"></span> Retour à la liste
                                     </a>
-                                    <!-- Vous pouvez ajouter d'autres boutons ici, comme Modifier ou Supprimer -->
                                 </div>
                             </div>
                         <% } else { %>

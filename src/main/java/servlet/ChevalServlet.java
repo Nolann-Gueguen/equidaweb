@@ -15,7 +15,6 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import model.Cheval;
 import model.Race;
-import java.time.LocalDate;
 
 @WebServlet(name = "chevalServlet", value = "/cheval-servlet/*")
 public class ChevalServlet extends HttpServlet {

@@ -9,6 +9,8 @@ public class Cheval {
     private String dateNaissance;
     private Lot lot;
     private Race race;
+    private Cheval pere;
+    private Cheval mere;
 
     public Cheval() {
     }
@@ -50,5 +52,22 @@ public class Cheval {
     public void setLot(Lot lot) {
         this.lot = lot;
     }
+
+    public Cheval getPere() {
+        return pere;
+    }
+
+    public void setPere(Cheval pere) {
+        this.pere = pere;
+    }
+
+    public Cheval getMere() {
+        return mere;
+    }
+
+    public void setMere(Cheval mere) {
+        this.mere = mere;
+    }
+    
     
 }

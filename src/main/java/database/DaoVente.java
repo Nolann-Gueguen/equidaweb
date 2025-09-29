@@ -86,28 +86,37 @@ public class DaoVente {
         return false;
     }
     
-    public static ArrayList<Cheval> getLesChevaux(Connection cnx, int idVente) {
-    ArrayList<Cheval> lesChevaux = new ArrayList<>();
-    String sql = "SELECT c.id AS c_id, c.nom AS c_nom " +
-                 "FROM cheval c " +
-                 "INNER JOIN lot l ON l.cheval_id = c.id " +
-                 "WHERE l.vente_id = ?";
+            public static ArrayList<Lot> getLesLots(Connection cnx, int idVente) {
+             ArrayList<Lot> lesLots = new ArrayList<>();
+             String sql = "SELECT l.id AS lot_id, l.prixDepart AS lot_prixDepart, " +
+                          "c.id AS c_id, c.nom AS c_nom " +
+                          "FROM lot l " +
+                          "INNER JOIN cheval c ON l.cheval_id = c.id " +
+                          "WHERE l.vente_id = ?";
 
-    try (PreparedStatement ps = cnx.prepareStatement(sql)) {
-        ps.setInt(1, idVente);
-        try (ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                Cheval c = new Cheval();
-                c.setId(rs.getInt("c_id"));
-                c.setNom(rs.getString("c_nom"));
-                lesChevaux.add(c);
-            }
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
-        System.out.println("La requête getLesChevaux a échoué");
-    }
-    return lesChevaux;
-}
+             try (PreparedStatement ps = cnx.prepareStatement(sql)) {
+                 ps.setInt(1, idVente);
+                 try (ResultSet rs = ps.executeQuery()) {
+                     while (rs.next()) {
+                         // Création du cheval
+                         Cheval cheval = new Cheval();
+                         cheval.setId(rs.getInt("c_id"));
+                         cheval.setNom(rs.getString("c_nom"));
+
+                         // Création du lot
+                         Lot lot = new Lot();
+                         lot.setId(rs.getInt("lot_id"));
+                         lot.setPrixDepart(rs.getString("lot_prixDepart"));
+                         lot.setCheval(cheval); // association cheval → lot
+
+                         lesLots.add(lot);
+                     }
+                 }
+             } catch (SQLException e) {
+                 e.printStackTrace();
+                 System.out.println("La requête getLesLots a échoué");
+             }
+             return lesLots;
+         }
 
 }

@@ -47,11 +47,21 @@ public class DaoCheval {
         Cheval cheval = null;
         try {
             requeteSql = cnx.prepareStatement(
-                "SELECT c.id as c_id, c.nom as c_nom, c.dateNaissance c_dateNaissance," +
-                "r.id as r_id, r.nom as r_nom " +
+                "SELECT " +
+                "c.id AS c_id, " +
+                "c.nom AS c_nom, " +
+                "c.dateNaissance AS c_dateNaissance, " +
+                "c.pere_id, " +
+                "c.mere_id, " +
+                "pere.nom AS pere_nom, " +
+                "mere.nom AS mere_nom, " +
+                "r.id AS r_id, " +
+                "r.nom AS r_nom " +
                 "FROM cheval c " +
                 "INNER JOIN race r ON c.race_id = r.id " +
-                "WHERE c.id = ?"
+                "LEFT JOIN cheval pere ON pere.id = c.pere_id " +
+                "LEFT JOIN cheval mere ON mere.id = c.mere_id " +
+                "WHERE c.id = ? "
             );
             requeteSql.setInt(1, idCheval);
             resultatRequete = requeteSql.executeQuery();
@@ -64,6 +74,23 @@ public class DaoCheval {
                 race.setId(resultatRequete.getInt("r_id"));
                 race.setNom(resultatRequete.getString("r_nom"));
                 cheval.setRace(race);
+                int idPere = resultatRequete.getInt("pere_id");
+                if(!resultatRequete.wasNull()){
+                    Cheval pere = new Cheval();
+                    pere.setId(idPere);
+                    pere.setNom(resultatRequete.getString("pere_nom"));
+                    cheval.setPere(pere);
+                }
+                
+                int idMere = resultatRequete.getInt("mere_id");
+                if(!resultatRequete.wasNull()){
+                Cheval mere = new Cheval();
+                mere.setId(idMere);
+                mere.setNom(resultatRequete.getString("mere_nom"));
+                cheval.setMere(mere);
+                }
+
+                
             }
         } catch (SQLException e) {
             e.printStackTrace();
