@@ -1,9 +1,9 @@
 package database;
 
+import static database.DaoCheval.resultatRequete;
 import java.sql.*;
 import java.util.ArrayList;
-import model.Vente;
-import model.Lieu;
+import model.*;
 
 public class DaoVente {
 
@@ -32,6 +32,7 @@ public class DaoVente {
         }
         return lesVentes;
     }
+    
 
     public static Vente getLaVente(Connection cnx, int idVente) {
         Vente vente = null;
@@ -84,4 +85,29 @@ public class DaoVente {
         }
         return false;
     }
+    
+    public static ArrayList<Cheval> getLesChevaux(Connection cnx, int idVente) {
+    ArrayList<Cheval> lesChevaux = new ArrayList<>();
+    String sql = "SELECT c.id AS c_id, c.nom AS c_nom " +
+                 "FROM cheval c " +
+                 "INNER JOIN lot l ON l.cheval_id = c.id " +
+                 "WHERE l.vente_id = ?";
+
+    try (PreparedStatement ps = cnx.prepareStatement(sql)) {
+        ps.setInt(1, idVente);
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Cheval c = new Cheval();
+                c.setId(rs.getInt("c_id"));
+                c.setNom(rs.getString("c_nom"));
+                lesChevaux.add(c);
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+        System.out.println("La requête getLesChevaux a échoué");
+    }
+    return lesChevaux;
+}
+
 }

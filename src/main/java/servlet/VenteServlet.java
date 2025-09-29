@@ -17,6 +17,7 @@ import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
+import model.Cheval;
 import model.Vente;
 import model.Lieu;
 
@@ -52,6 +53,8 @@ public class VenteServlet extends HttpServlet {
 
                 if (laVente != null) {
                     request.setAttribute("pLaVente", laVente);
+                    ArrayList<Cheval> lesChevaux = DaoVente.getLesChevaux(cnx, idVente);
+                    request.setAttribute("plesChevaux", lesChevaux);
                     this.getServletContext().getRequestDispatcher("/WEB-INF/views/vente/show.jsp").forward(request, response);
                 } else {
                     response.sendRedirect(request.getContextPath() + "/vente-servlet/list");

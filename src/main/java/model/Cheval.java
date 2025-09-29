@@ -6,8 +6,8 @@ public class Cheval {
 
     private int id;
     private String nom;
-    private LocalDate dateNaissance;
-
+    private String dateNaissance;
+    private Lot lot;
     private Race race;
 
     public Cheval() {
@@ -29,11 +29,11 @@ public class Cheval {
         this.nom = nom;
     }
 
-    public LocalDate getDateNaissance() {
+    public String getDateNaissance() {
         return dateNaissance;
     }
 
-    public void setDateNaissance(LocalDate dateNaissance) {
+    public void setDateNaissance(String dateNaissance) {
         this.dateNaissance = dateNaissance;
     }
     public Race getRace() {
@@ -42,4 +42,13 @@ public class Cheval {
     public void setRace(Race race) {
         this.race = race;
     }
+
+    public Lot getLot() {
+        return lot;
+    }
+
+    public void setLot(Lot lot) {
+        this.lot = lot;
+    }
+    
 }

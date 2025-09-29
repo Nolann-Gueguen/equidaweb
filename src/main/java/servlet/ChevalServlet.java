@@ -77,7 +77,7 @@ public class ChevalServlet extends HttpServlet {
             try {
                 // Récupération des données du formulaire
                 String nom = request.getParameter("nom");
-                String dateNaissanceStr = request.getParameter("dateNaissance");
+                String dateNaissance = request.getParameter("dateNaissance");
                 int raceId = Integer.parseInt(request.getParameter("race"));
 
                 // Création d'un nouveau cheval
@@ -85,8 +85,7 @@ public class ChevalServlet extends HttpServlet {
                 nouveauCheval.setNom(nom);
 
                 // Gestion de la date de naissance
-                if (dateNaissanceStr != null && !dateNaissanceStr.isEmpty()) {
-                    LocalDate dateNaissance = LocalDate.parse(dateNaissanceStr);
+                if (dateNaissance != null && !dateNaissance.isEmpty()) {
                     nouveauCheval.setDateNaissance(dateNaissance);
                 }
 
