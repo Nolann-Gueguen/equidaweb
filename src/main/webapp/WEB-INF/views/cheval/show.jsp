@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="model.Cheval" %>
+<%@ page import="model.ChevalCourse" %>
 
 <!DOCTYPE html>
 <html>
@@ -108,6 +109,34 @@
                                     <% } %>
                                 </div>
                             </div>
+                                
+                            <!-- 👇 Partie ajoutée pour afficher les participations -->
+                            <h3 style="margin-top:30px;">Participations aux courses</h3>
+                            <% if (leCheval.getLesChevauxCourse() != null && !leCheval.getLesChevauxCourse().isEmpty()) { %>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Course</th>
+                                            <th>Date</th>
+                                            <th>Position</th>
+                                            <th>Temps</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% for (ChevalCourse cc : leCheval.getLesChevauxCourse()) { %>
+                                            <tr>
+                                                <td><%= cc.getCourse() != null ? cc.getCourse().getNom() : "Non renseignée" %></td>
+                                                <td><%= cc.getCourse() != null ? cc.getCourse().getDateCourse() : "Non renseignée" %></td>
+                                                <td><%= cc.getPosition() > 0 ? cc.getPosition() : "Non renseignée" %></td>
+                                                <td><%= cc.getTemps() != null && !cc.getTemps().isEmpty() ? cc.getTemps() : "Non renseigné" %></td>
+                                            </tr>
+                                        <% } %>
+                                    </tbody>
+                                </table>
+                            <% } else { %>
+                                <p>Aucune participation enregistrée pour ce cheval.</p>
+                            <% } %>
+                                
 
                             <div class="row" style="margin-top: 30px;">
                                 <div class="col-sm-offset-3 col-sm-9">
@@ -124,6 +153,7 @@
                                 <span class="glyphicon glyphicon-arrow-left"></span> Retour à la liste
                             </a>
                         <% } %>
+                        
                     </div>
                 </div>
             </div>
