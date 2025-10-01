@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import model.*;
 public class Cheval {
 
@@ -11,6 +12,8 @@ public class Cheval {
     private Race race;
     private Cheval pere;
     private Cheval mere;
+    private ArrayList<ChevalCourse> LesChevauxCourse;
+
 
     public Cheval() {
     }
@@ -68,6 +71,20 @@ public class Cheval {
     public void setMere(Cheval mere) {
         this.mere = mere;
     }
+
+    public ArrayList<ChevalCourse> getLesChevauxCourse() {
+        return LesChevauxCourse;
+    }
+
+    public void setLesChevauxCourse(ArrayList<ChevalCourse> LesChevauxCourse) {
+        this.LesChevauxCourse = LesChevauxCourse;
+    }
     
+    public void addCheval(ChevalCourse unChevalCourse){
+        if (LesChevauxCourse ==null ){
+            LesChevauxCourse = new ArrayList<ChevalCourse>();
+        }
+        LesChevauxCourse.add(unChevalCourse);
+    }
     
 }

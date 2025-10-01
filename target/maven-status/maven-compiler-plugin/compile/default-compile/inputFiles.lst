@@ -1,6 +1,7 @@
 E:\SIO2\Nolann\projet\equidaweb25Netbeans\src\main\java\database\DaoLieu.java
 E:\SIO2\Nolann\projet\equidaweb25Netbeans\src\main\java\database\Connexionbdd.java
 E:\SIO2\Nolann\projet\equidaweb25Netbeans\src\main\java\model\Enchere.java
+E:\SIO2\Nolann\projet\equidaweb25Netbeans\src\main\java\model\ChevalCourse.java
 E:\SIO2\Nolann\projet\equidaweb25Netbeans\src\main\java\test\TestVente.java
 E:\SIO2\Nolann\projet\equidaweb25Netbeans\src\main\java\model\Lot.java
 E:\SIO2\Nolann\projet\equidaweb25Netbeans\src\main\java\database\DaoVente.java
@@ -16,6 +17,7 @@ E:\SIO2\Nolann\projet\equidaweb25Netbeans\src\main\java\test\TestCheval.java
 E:\SIO2\Nolann\projet\equidaweb25Netbeans\src\main\java\model\Lieu.java
 E:\SIO2\Nolann\projet\equidaweb25Netbeans\src\main\java\sio\equidaweb\JakartaRestConfiguration.java
 E:\SIO2\Nolann\projet\equidaweb25Netbeans\src\main\java\servlet\ChevalServlet.java
+E:\SIO2\Nolann\projet\equidaweb25Netbeans\src\main\java\model\Course.java
 E:\SIO2\Nolann\projet\equidaweb25Netbeans\src\main\java\database\ConnexionServlet.java
 E:\SIO2\Nolann\projet\equidaweb25Netbeans\src\main\java\sio\equidaweb\resources\JakartaEE10Resource.java
 E:\SIO2\Nolann\projet\equidaweb25Netbeans\src\main\java\model\CategVente.java

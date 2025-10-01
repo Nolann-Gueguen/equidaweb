@@ -8,6 +8,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import model.ChevalCourse;
+import model.Course;
 
 public class DaoCheval {
     Connection cnx;
@@ -44,60 +46,85 @@ public class DaoCheval {
 
     
     public static Cheval getLeCheval(Connection cnx, int idCheval) {
-        Cheval cheval = null;
-        try {
-            requeteSql = cnx.prepareStatement(
-                "SELECT " +
-                "c.id AS c_id, " +
-                "c.nom AS c_nom, " +
-                "c.dateNaissance AS c_dateNaissance, " +
-                "c.pere_id, " +
-                "c.mere_id, " +
-                "pere.nom AS pere_nom, " +
-                "mere.nom AS mere_nom, " +
-                "r.id AS r_id, " +
-                "r.nom AS r_nom " +
-                "FROM cheval c " +
-                "INNER JOIN race r ON c.race_id = r.id " +
-                "LEFT JOIN cheval pere ON pere.id = c.pere_id " +
-                "LEFT JOIN cheval mere ON mere.id = c.mere_id " +
-                "WHERE c.id = ? "
-            );
-            requeteSql.setInt(1, idCheval);
-            resultatRequete = requeteSql.executeQuery();
-            if (resultatRequete.next()) {
+    Cheval cheval = null;
+    try {
+        requeteSql = cnx.prepareStatement(
+            "SELECT " +
+            "c.id AS c_id, " +
+            "c.nom AS c_nom, " +
+            "c.dateNaissance AS c_dateNaissance, " +
+            "c.pere_id, " +
+            "c.mere_id, " +
+            "pere.nom AS pere_nom, " +
+            "mere.nom AS mere_nom, " +
+            "r.id AS r_id, " +
+            "r.nom AS r_nom, " +
+            "cc.position AS cc_position, " +
+            "cc.temps AS cc_temps, " +
+            "co.nom AS co_nom, " +
+            "co.dateCourse AS co_dateCourse " +
+            "FROM cheval c " +
+            "INNER JOIN race r ON c.race_id = r.id " +
+            "LEFT JOIN cheval pere ON pere.id = c.pere_id " +
+            "LEFT JOIN cheval mere ON mere.id = c.mere_id " +
+            "LEFT JOIN cheval_course cc ON cc.cheval_id = c.id " +
+            "LEFT JOIN course co ON co.id = cc.course_id " +
+            "WHERE c.id = ?;"
+        );
+
+        requeteSql.setInt(1, idCheval);
+        resultatRequete = requeteSql.executeQuery();
+
+        while (resultatRequete.next()) {
+            if (cheval == null) {
                 cheval = new Cheval();
                 cheval.setId(resultatRequete.getInt("c_id"));
                 cheval.setNom(resultatRequete.getString("c_nom"));
                 cheval.setDateNaissance(resultatRequete.getString("c_dateNaissance"));
+
                 Race race = new Race();
                 race.setId(resultatRequete.getInt("r_id"));
                 race.setNom(resultatRequete.getString("r_nom"));
                 cheval.setRace(race);
+
                 int idPere = resultatRequete.getInt("pere_id");
-                if(!resultatRequete.wasNull()){
+                if (!resultatRequete.wasNull()) {
                     Cheval pere = new Cheval();
                     pere.setId(idPere);
                     pere.setNom(resultatRequete.getString("pere_nom"));
                     cheval.setPere(pere);
                 }
-                
-                int idMere = resultatRequete.getInt("mere_id");
-                if(!resultatRequete.wasNull()){
-                Cheval mere = new Cheval();
-                mere.setId(idMere);
-                mere.setNom(resultatRequete.getString("mere_nom"));
-                cheval.setMere(mere);
-                }
 
-                
+                int idMere = resultatRequete.getInt("mere_id");
+                if (!resultatRequete.wasNull()) {
+                    Cheval mere = new Cheval();
+                    mere.setId(idMere);
+                    mere.setNom(resultatRequete.getString("mere_nom"));
+                    cheval.setMere(mere);
+                }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("La requête de getLeCheval a généré une exception SQL");
+
+            if (resultatRequete.getString("co_nom") != null) {
+                Course course = new Course();
+                course.setNom(resultatRequete.getString("co_nom"));
+                course.setDateCourse(resultatRequete.getString("co_dateCourse"));
+
+                ChevalCourse chevalCourse = new ChevalCourse();
+                chevalCourse.setPosition(resultatRequete.getInt("cc_position"));
+                chevalCourse.setTemps(resultatRequete.getString("cc_temps"));
+                chevalCourse.setCourse(course);
+                chevalCourse.setCheval(cheval);
+
+                cheval.addCheval(chevalCourse);
+            }
         }
-        return cheval;
+    } catch (SQLException e) {
+        e.printStackTrace();
+        System.out.println("La requête de getLeCheval a généré une exception SQL");
     }
+    return cheval;
+}
+
     
     public static boolean ajouterCheval(Connection cnx, Cheval cheval) {
     try {

@@ -8,6 +8,7 @@ model\CategVente.class
 database\DaoRace.class
 test\TestCheval.class
 model\Lot.class
+model\Course.class
 test\TestVente.class
 database\Connexionbdd.class
 servlet\VenteServlet.class
@@ -15,6 +16,7 @@ model\Race.class
 model\Vente.class
 database\DaoLieu.class
 test\TestRace.class
+model\ChevalCourse.class
 database\ConnexionServlet.class
 servlet\ChevalServlet.class
 sio\equidaweb\JakartaRestConfiguration.class
