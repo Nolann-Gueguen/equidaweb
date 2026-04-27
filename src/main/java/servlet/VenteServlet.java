@@ -75,7 +75,7 @@ public class VenteServlet extends HttpServlet {
 
 
     }
-/**
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String path = request.getPathInfo();
@@ -123,5 +123,5 @@ public class VenteServlet extends HttpServlet {
     }
 
     public void destroy() {
-    }**/
+    }
 }
