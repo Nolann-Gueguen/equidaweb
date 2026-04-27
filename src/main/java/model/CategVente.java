@@ -1,27 +1,19 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
-import model.*;
-/**
- *
- * @author sio2
- */
+
 public class CategVente {
 
-    private int code;
+    // Correction : code est un varchar(10) dans la BDD, donc String et non int
+    private String code;
     private String libelle;
 
-    
     public CategVente() {
     }
-    
-    public int getCode() {
+
+    public String getCode() {
         return code;
     }
 
-    public void setCode(int code) {
+    public void setCode(String code) {
         this.code = code;
     }
 
@@ -32,8 +24,4 @@ public class CategVente {
     public void setLibelle(String libelle) {
         this.libelle = libelle;
     }
-    
-
-
-    
 }

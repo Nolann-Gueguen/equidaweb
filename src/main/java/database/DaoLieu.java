@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package database;
 
 import model.Lieu;
@@ -23,8 +19,9 @@ public class DaoLieu {
     public static ArrayList<Lieu> getLesLieux(Connection cnx) {
         ArrayList<Lieu> lesLieux = new ArrayList<Lieu>();
         try {
+            // Correction : la colonne s'appelle "ville", pas "nom"
             requeteSql = cnx.prepareStatement(
-                "SELECT id, nom FROM lieu ORDER BY ville"
+                "SELECT id, ville FROM lieu ORDER BY ville"
             );
             resultatRequete = requeteSql.executeQuery();
             while (resultatRequete.next()) {

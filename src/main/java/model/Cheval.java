@@ -2,12 +2,13 @@ package model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.time.LocalDate;
 import model.*;
 public class Cheval {
 
     private int id;
     private String nom;
-    private String dateNaissance;
+    private LocalDate dateNaissance;
     private Lot lot;
     private Race race;
     private Cheval pere;
@@ -24,7 +25,7 @@ public class Cheval {
 
     public void setId(int id) {
         this.id = id;
-    }
+    }            
 
     public String getNom() {
         return nom;
@@ -34,16 +35,18 @@ public class Cheval {
         this.nom = nom;
     }
 
-    public String getDateNaissance() {
+    public LocalDate getDateNaissance() {
         return dateNaissance;
     }
 
-    public void setDateNaissance(String dateNaissance) {
+    public void setDateNaissance(LocalDate dateNaissance) {
         this.dateNaissance = dateNaissance;
     }
+    
     public Race getRace() {
         return race;
     }
+    
     public void setRace(Race race) {
         this.race = race;
     }

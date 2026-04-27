@@ -20,7 +20,7 @@ public class TestVente {
 
         // création d'une instance de race nommée r
         CategVente c = new CategVente();
-        c.setCode(1);
+        //c.setCode(1);
         c.setLibelle("vente");
         
 

@@ -58,7 +58,7 @@
                             <div class="form-group">
                                 <label for="dateNaissance" class="col-sm-3 control-label">Date de naissance</label>
                                 <div class="col-sm-9">
-                                    <input type="date" name="dateNaissance" id="dateNaissance" class="form-control">
+                                    <input type="text" name="dateNaissance" id="dateNaissance" class="form-control">
                                 </div>
                             </div>
 
@@ -86,7 +86,7 @@
                                         <span class="glyphicon glyphicon-plus"></span> Ajouter
                                     </button>
                                     <a href="<%= request.getContextPath() %>/cheval-servlet/list" class="btn btn-default">
-                                        <span class="glyphicon glyphicon-remove"></span> Annuler
+                                        <span class="glyphicon glyphicon-remove"></span> Annulerdsqd
                                     </a>
                                 </div>
                             </div>
@@ -102,7 +102,7 @@
                 </div>
             </div>
         </div>
-        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <!-- Bootstrap JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     </body>

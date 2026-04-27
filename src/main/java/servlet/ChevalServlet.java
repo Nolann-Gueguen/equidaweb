@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 import database.DaoCheval;
 import database.DaoRace;
@@ -50,13 +52,14 @@ public class ChevalServlet extends HttpServlet {
                     request.setAttribute("pLeCheval", leCheval);
                     this.getServletContext().getRequestDispatcher("/WEB-INF/views/cheval/show.jsp").forward(request, response);
                 } else {
-                    response.sendRedirect(request.getContextPath() + "/cheval-servlet/lister");
+                    // Correction : "/cheval-servlet/lister" → "/cheval-servlet/list"
+                    response.sendRedirect(request.getContextPath() + "/cheval-servlet/list");
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Erreur : l'id du cheval n'est pas un nombre valide");
-                response.sendRedirect(request.getContextPath() + "/cheval-servlet/lister");
+                // Correction : "/cheval-servlet/lister" → "/cheval-servlet/list"
+                response.sendRedirect(request.getContextPath() + "/cheval-servlet/list");
             }
-
         }
 
         if ("/add".equals(path)) {
@@ -64,8 +67,6 @@ public class ChevalServlet extends HttpServlet {
             request.setAttribute("pLesRaces", lesRaces);
             this.getServletContext().getRequestDispatcher("/WEB-INF/views/cheval/add.jsp").forward(request, response);
         }
-
-
     }
 
     @Override
@@ -85,7 +86,11 @@ public class ChevalServlet extends HttpServlet {
 
                 // Gestion de la date de naissance
                 if (dateNaissance != null && !dateNaissance.isEmpty()) {
-                    nouveauCheval.setDateNaissance(dateNaissance);
+                    try {
+                        nouveauCheval.setDateNaissance(LocalDate.parse(dateNaissance)); // <-- Conversion String vers LocalDate
+                    } catch (DateTimeParseException e) {
+                        throw new Exception("Le format de la date de naissance est invalide.");
+                    }
                 }
 
                 // Récupération et attribution de la race
