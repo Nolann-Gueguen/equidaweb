@@ -86,7 +86,7 @@
                                         <span class="glyphicon glyphicon-plus"></span> Ajouter
                                     </button>
                                     <a href="<%= request.getContextPath() %>/cheval-servlet/list" class="btn btn-default">
-                                        <span class="glyphicon glyphicon-remove"></span> Annulerdsqd
+                                        <span class="glyphicon glyphicon-remove"></span> Annuler
                                     </a>
                                 </div>
                             </div>
