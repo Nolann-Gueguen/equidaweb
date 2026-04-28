@@ -32,10 +32,15 @@
             <div class="container">
                 <div class="navbar-header">
                     <a href='../vente-servlet/list' class="navbar-brand">
-                        Système de gestion des ventes aux enchères de chevaux
+                        Système de gestion des ventes aux enchères de chevaux                                                                          
                     </a>
                 </div>
+               
             </div>
+             
+                <a href='../cheval-servlet/list' class="navbar-brand">
+                        Voir les Chevaux
+                </a>
         </nav>
 
         <div class="container special">

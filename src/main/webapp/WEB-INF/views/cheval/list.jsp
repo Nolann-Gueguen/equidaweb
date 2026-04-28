@@ -36,7 +36,11 @@
                     </a>
                 </div>
             </div>
+                     <a href='../vente-servlet/list' class="navbar-brand">
+                        Voir les Ventes
+                    </a>
         </nav>
+
 
         <div class="container special">
             <div class="header-actions">
