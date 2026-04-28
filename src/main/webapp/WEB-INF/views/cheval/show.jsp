@@ -153,13 +153,7 @@
                                 <span class="glyphicon glyphicon-arrow-left"></span> Retour à la liste
                             </a>
                         <% } %>
-                        <td>
-                            <a href="supprimer?id=<%= leCheval.getId() %>" 
-                                class="btn btn-danger" 
-                                onclick="return confirm('Êtes-vous sûr de vouloir supprimer définitivement ce cheval ?')">
-                                 <span class="glyphicon glyphicon-trash"></span> Supprimer ce cheval
-                            </a>
-                        </td>
+                        
                         
                     </div>
                         

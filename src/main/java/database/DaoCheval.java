@@ -164,14 +164,6 @@ public class DaoCheval {
         return false;
     }
     
-    public static void supprimerCheval(Connection cnx, int id) {
-        String requete = "DELETE FROM cheval WHERE id = ?";
-        try (PreparedStatement pst = cnx.prepareStatement(requete)) {
-            pst.setInt(1, id);
-            pst.executeUpdate();
-            System.out.println("Cheval avec l'ID " + id + " supprimé avec succès.");
-        } catch (SQLException e) {
-            System.out.println("Erreur lors de la suppression : " + e.getMessage());
-        }
-    }
+          
+ 
 }

@@ -37,28 +37,6 @@ public class ChevalServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String path = request.getPathInfo();
         System.out.println("PathInfo: " + path);
-
-            // On récupère la fin de l'URL
-        String action = request.getServletPath();
-    
-        // CAS 1 : On demande la suppression
-        // Si l'URL finit par /supprimer
-        if ("/supprimer".equals(path)) {
-
-            // 1. Récupérer l'ID (Assure-toi que dans ta JSP le paramètre s'appelle bien "id")
-            String idStr = request.getParameter("id");
-
-            if (idStr != null) {
-                int id = Integer.parseInt(idStr);
-
-                // 2. Appeler le DAO (On utilise la connexion 'cnx' de la classe, déjà init)
-                DaoCheval.supprimerCheval(cnx, id);
-            }
-
-            // 3. Rediriger vers la liste (on remonte d'un cran)
-            response.sendRedirect("list");
-            return; // Important pour arrêter l'exécution ici
-        }
     
         if ("/list".equals(path)) {
             ArrayList<Cheval> lesChevaux = DaoCheval.getLesChevaux(cnx);
