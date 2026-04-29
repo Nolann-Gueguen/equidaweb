@@ -1,17 +1,20 @@
 package database;
 
-import static database.DaoCheval.resultatRequete;
 import java.sql.*;
 import java.util.ArrayList;
 import model.*;
 
 public class DaoVente {
 
+    /**
+     * Récupère toutes les ventes avec leur lieu.
+     */
     public static ArrayList<Vente> getLesVentes(Connection cnx) {
         ArrayList<Vente> lesVentes = new ArrayList<>();
-        String sql = "SELECT v.id as v_id, v.nom as v_nom, " +
-                     "l.id as l_id, l.ville as l_ville " +
-                     "FROM vente v INNER JOIN lieu l ON v.lieu_id = l.id";
+        String sql = "SELECT v.id AS v_id, v.nom AS v_nom, " +
+                     "l.id AS l_id, l.ville AS l_ville " +
+                     "FROM vente v INNER JOIN lieu l ON v.lieu_id = l.id " +
+                     "ORDER BY v.dateDebutVente DESC";
 
         try (PreparedStatement ps = cnx.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
@@ -32,12 +35,14 @@ public class DaoVente {
         }
         return lesVentes;
     }
-    
 
+    /**
+     * Récupère le détail d'une vente par son id.
+     */
     public static Vente getLaVente(Connection cnx, int idVente) {
         Vente vente = null;
-        String sql = "SELECT v.id as v_id, v.nom as v_nom, v.dateDebutVente as v_dateDebutVente," +
-                     "l.id as l_id, l.ville as l_ville " +
+        String sql = "SELECT v.id AS v_id, v.nom AS v_nom, v.dateDebutVente AS v_dateDebutVente, " +
+                     "l.id AS l_id, l.ville AS l_ville " +
                      "FROM vente v INNER JOIN lieu l ON v.lieu_id = l.id " +
                      "WHERE v.id = ?";
 
@@ -62,21 +67,37 @@ public class DaoVente {
         return vente;
     }
 
+    /**
+     * Insère une nouvelle vente.
+     * Utilise 'C01' comme categ_code par défaut (Vente aux enchères).
+     * La colonne id n'étant pas AUTO_INCREMENT dans le schéma actuel,
+     * on calcule MAX(id)+1 pour éviter les conflits.
+     */
     public static boolean ajouterVente(Connection cnx, Vente vente) {
-        String sql = "INSERT INTO vente (nom, lieu_id) VALUES (?, ?)";
+        // Calcul du prochain id (la table vente n'a pas AUTO_INCREMENT dans le schéma fourni)
+        int nextId = 1;
+        String sqlMax = "SELECT COALESCE(MAX(id), 0) + 1 AS next_id FROM vente";
+        try (PreparedStatement psMax = cnx.prepareStatement(sqlMax);
+             ResultSet rsMax = psMax.executeQuery()) {
+            if (rsMax.next()) {
+                nextId = rsMax.getInt("next_id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-        try (PreparedStatement ps = cnx.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            ps.setString(1, vente.getNom());
-            ps.setInt(2, vente.getLieu().getId());
+        String sql = "INSERT INTO vente (id, nom, dateDebutVente, categ_code, lieu_id) " +
+                     "VALUES (?, ?, ?, 'C01', ?)";
+
+        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
+            ps.setInt(1, nextId);
+            ps.setString(2, vente.getNom());
+            ps.setString(3, vente.getDateDebutVente());
+            ps.setInt(4, vente.getLieu().getId());
 
             int result = ps.executeUpdate();
-
             if (result == 1) {
-                try (ResultSet rs = ps.getGeneratedKeys()) {
-                    if (rs.next()) {
-                        vente.setId(rs.getInt(1));
-                    }
-                }
+                vente.setId(nextId);
                 return true;
             }
         } catch (SQLException e) {
@@ -86,37 +107,38 @@ public class DaoVente {
         return false;
     }
     
-            public static ArrayList<Lot> getLesLots(Connection cnx, int idVente) {
-             ArrayList<Lot> lesLots = new ArrayList<>();
-             String sql = "SELECT l.id AS lot_id, l.prixDepart AS lot_prixDepart, " +
-                          "c.id AS c_id, c.nom AS c_nom " +
-                          "FROM lot l " +
-                          "INNER JOIN cheval c ON l.cheval_id = c.id " +
-                          "WHERE l.vente_id = ?";
 
-             try (PreparedStatement ps = cnx.prepareStatement(sql)) {
-                 ps.setInt(1, idVente);
-                 try (ResultSet rs = ps.executeQuery()) {
-                     while (rs.next()) {
-                         // Création du cheval
-                         Cheval cheval = new Cheval();
-                         cheval.setId(rs.getInt("c_id"));
-                         cheval.setNom(rs.getString("c_nom"));
+    /**
+     * Récupère les lots d'une vente avec le cheval associé.
+     */
+    public static ArrayList<Lot> getLesLots(Connection cnx, int idVente) {
+        ArrayList<Lot> lesLots = new ArrayList<>();
+        String sql = "SELECT l.id AS lot_id, l.prixDepart AS lot_prixDepart, " +
+                     "c.id AS c_id, c.nom AS c_nom " +
+                     "FROM lot l " +
+                     "INNER JOIN cheval c ON l.cheval_id = c.id " +
+                     "WHERE l.vente_id = ?";
 
-                         // Création du lot
-                         Lot lot = new Lot();
-                         lot.setId(rs.getInt("lot_id"));
-                         lot.setPrixDepart(rs.getString("lot_prixDepart"));
-                         lot.setCheval(cheval); // association cheval → lot
+        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
+            ps.setInt(1, idVente);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Cheval cheval = new Cheval();
+                    cheval.setId(rs.getInt("c_id"));
+                    cheval.setNom(rs.getString("c_nom"));
 
-                         lesLots.add(lot);
-                     }
-                 }
-             } catch (SQLException e) {
-                 e.printStackTrace();
-                 System.out.println("La requête getLesLots a échoué");
-             }
-             return lesLots;
-         }
+                    Lot lot = new Lot();
+                    lot.setId(rs.getInt("lot_id"));
+                    lot.setPrixDepart(rs.getString("lot_prixDepart"));
+                    lot.setCheval(cheval);
 
+                    lesLots.add(lot);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("La requête getLesLots a échoué");
+        }
+        return lesLots;
+    }
 }
