@@ -6,19 +6,17 @@ import model.*;
 
 public class DaoVente {
 
-    /**
-     * Récupère toutes les ventes avec leur lieu.
-     */
+    static PreparedStatement requeteSql = null;
+    static ResultSet resultatRequete = null;
+
     public static ArrayList<Vente> getLesVentes(Connection cnx) {
         ArrayList<Vente> lesVentes = new ArrayList<>();
-        String sql = "SELECT v.id AS v_id, v.nom AS v_nom, " +
-                     "l.id AS l_id, l.ville AS l_ville " +
-                     "FROM vente v INNER JOIN lieu l ON v.lieu_id = l.id " +
-                     "ORDER BY v.dateDebutVente DESC";
+        String sql = "SELECT v.id as v_id, v.nom as v_nom, " +
+                     "l.id as l_id, l.ville as l_ville " +
+                     "FROM vente v INNER JOIN lieu l ON v.lieu_id = l.id";
 
         try (PreparedStatement ps = cnx.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
-
             while (rs.next()) {
                 Vente v = new Vente();
                 v.setId(rs.getInt("v_id"));
@@ -36,13 +34,10 @@ public class DaoVente {
         return lesVentes;
     }
 
-    /**
-     * Récupère le détail d'une vente par son id.
-     */
     public static Vente getLaVente(Connection cnx, int idVente) {
         Vente vente = null;
-        String sql = "SELECT v.id AS v_id, v.nom AS v_nom, v.dateDebutVente AS v_dateDebutVente, " +
-                     "l.id AS l_id, l.ville AS l_ville " +
+        String sql = "SELECT v.id as v_id, v.nom as v_nom, v.dateDebutVente as v_dateDebutVente, " +
+                     "l.id as l_id, l.ville as l_ville " +
                      "FROM vente v INNER JOIN lieu l ON v.lieu_id = l.id " +
                      "WHERE v.id = ?";
 
@@ -67,37 +62,25 @@ public class DaoVente {
         return vente;
     }
 
-    /**
-     * Insère une nouvelle vente.
-     * Utilise 'C01' comme categ_code par défaut (Vente aux enchères).
-     * La colonne id n'étant pas AUTO_INCREMENT dans le schéma actuel,
-     * on calcule MAX(id)+1 pour éviter les conflits.
-     */
     public static boolean ajouterVente(Connection cnx, Vente vente) {
-        // Calcul du prochain id (la table vente n'a pas AUTO_INCREMENT dans le schéma fourni)
-        int nextId = 1;
-        String sqlMax = "SELECT COALESCE(MAX(id), 0) + 1 AS next_id FROM vente";
-        try (PreparedStatement psMax = cnx.prepareStatement(sqlMax);
-             ResultSet rsMax = psMax.executeQuery()) {
-            if (rsMax.next()) {
-                nextId = rsMax.getInt("next_id");
+        String sql = "INSERT INTO vente (nom, dateDebutVente, lieu_id, categ_code) VALUES (?, ?, ?, 'C01')";
+
+        try (PreparedStatement ps = cnx.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, vente.getNom());
+
+            if (vente.getDateDebutVente() != null && !vente.getDateDebutVente().isEmpty()) {
+                ps.setString(2, vente.getDateDebutVente());
+            } else {
+                ps.setNull(2, Types.DATE);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
-        String sql = "INSERT INTO vente (id, nom, dateDebutVente, categ_code, lieu_id) " +
-                     "VALUES (?, ?, ?, 'C01', ?)";
-
-        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
-            ps.setInt(1, nextId);
-            ps.setString(2, vente.getNom());
-            ps.setString(3, vente.getDateDebutVente());
-            ps.setInt(4, vente.getLieu().getId());
+            ps.setInt(3, vente.getLieu().getId());
 
             int result = ps.executeUpdate();
             if (result == 1) {
-                vente.setId(nextId);
+                try (ResultSet rs = ps.getGeneratedKeys()) {
+                    if (rs.next()) vente.setId(rs.getInt(1));
+                }
                 return true;
             }
         } catch (SQLException e) {
@@ -106,11 +89,34 @@ public class DaoVente {
         }
         return false;
     }
-    
 
     /**
-     * Récupère les lots d'une vente avec le cheval associé.
+     * Met à jour une vente existante (nom, date, lieu).
      */
+    public static boolean modifierVente(Connection cnx, Vente vente) {
+        String sql = "UPDATE vente SET nom = ?, dateDebutVente = ?, lieu_id = ? WHERE id = ?";
+
+        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
+            ps.setString(1, vente.getNom());
+
+            if (vente.getDateDebutVente() != null && !vente.getDateDebutVente().isEmpty()) {
+                ps.setString(2, vente.getDateDebutVente());
+            } else {
+                ps.setNull(2, Types.DATE);
+            }
+
+            ps.setInt(3, vente.getLieu().getId());
+            ps.setInt(4, vente.getId());
+
+            return ps.executeUpdate() == 1;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("La requête modifierVente a généré une exception SQL");
+        }
+        return false;
+    }
+
     public static ArrayList<Lot> getLesLots(Connection cnx, int idVente) {
         ArrayList<Lot> lesLots = new ArrayList<>();
         String sql = "SELECT l.id AS lot_id, l.prixDepart AS lot_prixDepart, " +
