@@ -111,13 +111,15 @@
                             <div class="alert alert-info">Aucun lot trouvé pour cette vente.</div>
                         <% } %>
 
-                    <div class="row" style="margin-top: 30px;">
-                        <div class="col-sm-offset-3 col-sm-9">
-                            <a href="<%= request.getContextPath() %>/vente-servlet/list" class="btn btn-default">
-                                <span class="glyphicon glyphicon-arrow-left"></span> Retour à la liste
-                            </a>
-                        </div>
-                    </div>
+                            <div class="row" style="margin-top: 30px;">
+                                <div class="col-sm-offset-3 col-sm-9">
+                                    
+                                    <a href="<%= request.getContextPath() %>/cheval-servlet/list"
+                                       class="btn btn-default">
+                                        <span class="glyphicon glyphicon-arrow-left"></span> Retour à la liste
+                                    </a>
+                                </div>
+                            </div>
 
                 <% } else { %>
                     <div class="alert alert-danger">

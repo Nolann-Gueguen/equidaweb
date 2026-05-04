@@ -12,12 +12,8 @@
               integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
               crossorigin="anonymous">
         <style>
-            body { 
-                padding-top: 50px; 
-            }
-            .special { 
-                padding-top: 50px; 
-            }
+            body { padding-top: 50px; }
+            .special { padding-top: 50px; }
             .form-container {
                 background-color: #f8f9fa;
                 border-radius: 5px;
@@ -25,16 +21,9 @@
                 margin-top: 20px;
                 box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             }
-            .detail-row {
-                margin-bottom: 15px;
-            }
-            .detail-label {
-                font-weight: bold;
-                color: #555;
-            }
-            .detail-value {
-                padding-top: 7px;
-            }
+            .detail-row { margin-bottom: 15px; }
+            .detail-label { font-weight: bold; color: #555; }
+            .detail-value { padding-top: 7px; }
         </style>
     </head>
     <body>
@@ -53,11 +42,11 @@
                 <div class="col-md-8 col-md-offset-2">
                     <div class="form-container">
                         <% 
-                            Cheval leCheval = (Cheval)request.getAttribute("pLeCheval");
-                            if(leCheval != null) {
+                            Cheval leCheval = (Cheval) request.getAttribute("pLeCheval");
+                            if (leCheval != null) {
                         %>
                             <h2>Détails du cheval : <%= leCheval.getNom() %></h2>
-                            
+
                             <div class="row detail-row">
                                 <div class="col-sm-3 detail-label">Identifiant</div>
                                 <div class="col-sm-9 detail-value"><%= leCheval.getId() %></div>
@@ -82,7 +71,6 @@
                                 </div>
                             </div>
 
-                            <!-- 👇 Partie ajoutée pour afficher le père -->
                             <div class="row detail-row">
                                 <div class="col-sm-3 detail-label">Père</div>
                                 <div class="col-sm-9 detail-value">
@@ -96,7 +84,6 @@
                                 </div>
                             </div>
 
-                            <!-- 👇 Partie ajoutée pour afficher la mère -->
                             <div class="row detail-row">
                                 <div class="col-sm-3 detail-label">Mère</div>
                                 <div class="col-sm-9 detail-value">
@@ -109,8 +96,7 @@
                                     <% } %>
                                 </div>
                             </div>
-                                
-                            <!-- 👇 Partie ajoutée pour afficher les participations -->
+
                             <h3 style="margin-top:30px;">Participations aux courses</h3>
                             <% if (leCheval.getLesChevauxCourse() != null && !leCheval.getLesChevauxCourse().isEmpty()) { %>
                                 <table class="table table-bordered">
@@ -136,32 +122,31 @@
                             <% } else { %>
                                 <p>Aucune participation enregistrée pour ce cheval.</p>
                             <% } %>
-                                
 
                             <div class="row" style="margin-top: 30px;">
                                 <div class="col-sm-offset-3 col-sm-9">
-                                    <a href="<%= request.getContextPath() %>/cheval-servlet/list" class="btn btn-default">
+                                    <a href="<%= request.getContextPath() %>/cheval-servlet/edit?idCheval=<%= leCheval.getId() %>"
+                                       class="btn btn-warning">
+                                        <span class="glyphicon glyphicon-pencil"></span> Modifier
+                                    </a>
+                                    <a href="<%= request.getContextPath() %>/cheval-servlet/list"
+                                       class="btn btn-default">
                                         <span class="glyphicon glyphicon-arrow-left"></span> Retour à la liste
                                     </a>
                                 </div>
                             </div>
+
                         <% } else { %>
-                            <div class="alert alert-danger">
-                                Le cheval demandé n'existe pas.
-                            </div>
+                            <div class="alert alert-danger">Le cheval demandé n'existe pas.</div>
                             <a href="<%= request.getContextPath() %>/cheval-servlet/list" class="btn btn-default">
                                 <span class="glyphicon glyphicon-arrow-left"></span> Retour à la liste
                             </a>
                         <% } %>
-                        
-                        
                     </div>
-                        
                 </div>
             </div>
         </div>
-        
-        <!-- Bootstrap JavaScript -->
+
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     </body>
 </html>
